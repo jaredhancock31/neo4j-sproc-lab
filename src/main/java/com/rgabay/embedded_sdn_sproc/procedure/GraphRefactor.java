@@ -24,9 +24,10 @@ public class GraphRefactor {
     public GraphDatabaseService db;
     /**
      * Redirects a relationships to a new target node.
+     * Impl is from APOC.
      */
-    @Procedure(name = "cisco.refactor.to", mode = Mode.WRITE)
-    @Description("cisco.refactor.to(rel, endNode) redirect relationship to use new end-node")
+    @Procedure(name = "jared.refactor.to", mode = Mode.WRITE)
+    @Description("jared.refactor.to(rel, endNode) redirect relationship to use new end-node")
     public Stream<RelationshipRefactorResult> to(@Name("relationship") Relationship rel, @Name("newNode") Node newNode) {
         RelationshipRefactorResult result = new RelationshipRefactorResult(rel.getId());
         try {

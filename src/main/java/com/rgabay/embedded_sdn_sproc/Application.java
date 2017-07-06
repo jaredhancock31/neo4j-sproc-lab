@@ -34,8 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @SpringBootApplication
 @EntityScan("com.rgabay.embedded_sdn_sproc.domain")
@@ -55,7 +53,6 @@ public class Application {
 	CommandLineRunner demo(/*PersonRepository personRepository,*/ Neo4jTemplate template) {
 		return args -> {
 
-//			HttpDriver driver = (HttpDriver) Components.driver();
 //			BoltDriver driver = (BoltDriver) Components.driver();
             EmbeddedDriver driver = (EmbeddedDriver) Components.driver();
             GraphDatabaseService databaseService = driver.getGraphDatabaseService();
@@ -64,23 +61,8 @@ public class Application {
 
 
             Person greg = new Person("Greg");
-            greg.setArbitraryLongs(Arrays.asList(new Long(1), new Long(2)));
 			template.save(greg);
 			greg = template.load(Person.class, greg.getId());
-
-            Result r = template.query("CALL com.rgabay.sprocnode(\"Person\")", Collections.EMPTY_MAP);
-            r.forEach(System.out::println);
-
-			Device ipad = new Device();
-			ipad.setModel("ipad");
-			template.save(ipad);
-
-			Device g6 = new Device();
-			g6.setModel("lgG6");
-			template.save(g6);
-
-			greg.setDevices(Arrays.asList(ipad, g6));
-			template.save(greg, -1);
 
 			Person jill = new Person("jill");
 			template.save(jill);
@@ -95,18 +77,11 @@ public class Application {
 			String query = "MATCH (a:Person {name:'Greg'})-[r]->(b:Person) " +
                            "WITH a,r,b " +
                            "MATCH (b)-[:ANCESTOR]->(d:Person) " +
-                           "CALL cisco.refactor.to(r, d) " +
+                           "CALL jared.refactor.to(r, d) " +
                            "YIELD output " +
                            "RETURN output";
 
 			r = template.query(query, Collections.EMPTY_MAP);
-
-
-//			Entity res = template.queryForObject(Entity.class, "CALL com.rgabay.popdev({startNode}) YIELD path " +
-//                                     "RETURN path", params);
-//			Result res = template.query("MATCH (n:Entity) WHERE ID(n)={startNode} CALL com.rgabay.popdev2(n) " +
-//                                        "YIELD nodes, relationships " +
-//                                        "RETURN nodes as nodes, relationships as rels ", params);
 
             greg = template.load(Person.class, greg.getId(), -1);
 
