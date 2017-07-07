@@ -8,13 +8,11 @@ import com.rgabay.embedded_sdn_sproc.procedure.GraphRefactor;
 import com.rgabay.embedded_sdn_sproc.procedure.PersonProc;
 import com.rgabay.embedded_sdn_sproc.repository.PersonRepository;
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
 import org.neo4j.kernel.impl.proc.Procedures;
 import org.neo4j.kernel.internal.GraphDatabaseAPI;
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.drivers.bolt.driver.BoltDriver;
 import org.neo4j.ogm.drivers.embedded.driver.EmbeddedDriver;
-import org.neo4j.ogm.drivers.http.driver.HttpDriver;
 import org.neo4j.ogm.model.Result;
 import org.neo4j.ogm.service.Components;
 import org.neo4j.ogm.session.SessionFactory;
@@ -45,7 +43,6 @@ public class Application {
     @Transactional
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
-
 	}
 
 	@Bean
@@ -81,12 +78,11 @@ public class Application {
                            "YIELD output " +
                            "RETURN output";
 
-			r = template.query(query, Collections.EMPTY_MAP);
+			Result r = template.query(query, Collections.EMPTY_MAP);
 
             greg = template.load(Person.class, greg.getId(), -1);
 
 			r.forEach(System.out::println);
-
 
 		};
 	}

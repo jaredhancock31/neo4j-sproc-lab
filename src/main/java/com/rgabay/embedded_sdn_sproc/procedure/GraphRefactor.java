@@ -22,6 +22,7 @@ public class GraphRefactor {
 
     @Context
     public GraphDatabaseService db;
+
     /**
      * Redirects a relationships to a new target node.
      * Impl is from APOC.
